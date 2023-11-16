@@ -50,7 +50,7 @@ jobs:
           Prog_version=${{ env.Prog_Version}}
           Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc")
           echo "[$Prod_version]"
-          Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc" | head -1 | awk "{ print $2}" | tr "," ".")
+          Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc" | head -1 | awk -F" " '{ print $2}' | tr "," ".")
           echo "VERSION=$Prod_version" >> $GITHUB_ENV
 
       - name: Print program version
