@@ -52,6 +52,7 @@ jobs:
           echo "[$Prod_version]"
           Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc" | head -1 | awk -F" " '{ print $2}' | tr "," ".")
           echo "VERSION=$Prod_version" >> $GITHUB_ENV
+          echo "Prog_version=$Prod_version" >> $GITHUB_ENV
 
       - name: Print program version
         continue-on-error: false
@@ -59,6 +60,13 @@ jobs:
         run: |
           echo "Print program version"
           echo "Version:[${{ env.VERSION }}]"
+          echo "Prog_version:[${{ env.Prog_version }}]"
+
+      - name: Install Windows 8.1 SDK
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Method Get -Uri https://go.microsoft.com/fwlink/p/?LinkId=323507 -OutFile sdksetup.exe -UseBasicParsing
+          Start-Process -Wait sdksetup.exe -ArgumentList "/q", "/norestart", "/features", "OptionId.WindowsDesktopSoftwareDevelopmentKit", "OptionId.NetFxSoftwareDevelopmentKit"
 
       - name: Set MSVC environment
         uses: deep-soft/msvc-dev-cmd@v1
