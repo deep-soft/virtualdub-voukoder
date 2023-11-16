@@ -48,6 +48,8 @@ jobs:
         shell: bash
         run: |
           Prog_version=${{ env.Prog_Version}}
+          Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc")
+          echo "[$Prod_version]"
           Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc" | awk "{ print $2}" | tr "," ".")
           echo "VERSION=$Prod_version" >> $GITHUB_ENV
 
