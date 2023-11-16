@@ -14,9 +14,6 @@ on:
       msbuild_cl_x86_release:
         default: true
         type: boolean
-      msbuild_cl_ARM64_release:
-        default: true
-        type: boolean
 
 env:
   PROG_NAME: "VirtualDUB"
@@ -34,7 +31,6 @@ jobs:
                  msbuild_cl_x64_release,
 #                 msbuild_cl_x86_debug,
                  msbuild_cl_x86_release,
-                 msbuild_cl_ARM64_release,
                ]
   
         include:
@@ -42,7 +38,6 @@ jobs:
           - { build: msbuild_cl_x64_release,   compiler: msbuild_cl, arch: amd64,       platform_sln: x64,   platform_name: x64,   build_config: Release }
 #          - { build: msbuild_cl_x86_debug,     compiler: msbuild_cl, arch: amd64_x86,   platform_sln: Win32, platform_name: x86,   build_config: Debug }
           - { build: msbuild_cl_x86_release,   compiler: msbuild_cl, arch: amd64_x86,   platform_sln: Win32, platform_name: x86,   build_config: Release }
-          - { build: msbuild_cl_ARM64_release, compiler: msbuild_cl, arch: amd64_arm64, platform_sln: ARM64, platform_name: ARM64, build_config: Release }
 
     steps:
       - name: Checkout source
@@ -53,7 +48,7 @@ jobs:
         shell: bash
         run: |
           Prog_version=${{ env.Prog_Version}}
-          Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc") | awk "{ print $2}" | tr "," "."
+          Prod_version=$(grep PRODUCTVERSION "src/vdub/res/vdub.rc") | awk "{ print $2}" | tr "," ".")
           echo "VERSION=$Prod_version" >> $GITHUB_ENV
 
       - name: Print program version
@@ -61,7 +56,7 @@ jobs:
         shell: bash
         run: |
           echo "Print program version"
-          echo ${{ env.VERSION }}
+          echo "Version:${{ env.VERSION }}"
 
       - name: Set MSVC environment
         uses: deep-soft/msvc-dev-cmd@v1
